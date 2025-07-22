@@ -1,0 +1,4 @@
+# This file is relevant for Nexus devices in the Ansible playbook.
+# It contains variables that are specific to Nexus devices.
+# Default login details for devices
+ansible_network_os: nxos # nxos for Cisco Nexus devices

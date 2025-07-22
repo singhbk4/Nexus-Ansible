@@ -1,0 +1,13 @@
+---
+- name: Backup Nexus device configuration
+  hosts: nexus
+  gather_facts: no
+  tasks:
+    - name: Backup Nexus device
+      cisco.nxos.nxos_config:
+        backup: true  
+        backup_options:
+          filename: "nexus_backup_{{ inventory_hostname }}.txt"
+          dir_path: ./Backups
+      register: backup_result
+      

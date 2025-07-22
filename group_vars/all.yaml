@@ -1,0 +1,9 @@
+---
+# This file is relevant for all devices in the Ansible playbook.
+# It contains variables that are common across all devices.
+
+# Default login details for devices
+ansible_user: admin
+ansible_ssh_pass: admin_password
+ansible_network_os: nxos # ios for Cisco Catalyst devices 
+ansible_connection: network_cli
