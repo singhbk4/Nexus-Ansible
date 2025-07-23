@@ -4,7 +4,7 @@
   gather_facts: no
   tasks:
     - name: Backup Nexus device
-      cisco.nxos.nxos_config:
+      nxos_config:
         backup: true  
         backup_options:
           filename: "nexus_backup_{{ inventory_hostname }}.txt"
