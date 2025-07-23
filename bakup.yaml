@@ -14,3 +14,11 @@
     - name: Display backup result
       debug:
         var: backup_result
+    
+    - name: Copy backup to backup server
+      copy:
+        src: "{{ backup_dir }}/nexus_backup_{{ inventory_hostname }}.txt"
+        dest: "C:\\Users\\kamle\\OneDrive\\Documents\\Ansible\\Nexus-Ansible\\Backups\\nexus_backup_{{ inventory_hostname }}.txt"
+      delegate_to: backup-server
+      when: backup_result.changed
+      
