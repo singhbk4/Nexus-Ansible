@@ -4,6 +4,6 @@
 
 # Default login details for devices
 ansible_user: admin
-ansible_ssh_pass: admin_password
-ansible_network_os: nxos # ios for Cisco Catalyst devices 
+ansible_ssh_pass: Python@123
+ansible_network_os: ios # ios for Cisco Catalyst devices 
 ansible_connection: network_cli
