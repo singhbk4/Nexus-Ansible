@@ -1,6 +1,3 @@
-[apic]
-apic ansible_host=192.168.6.111
-
 [nexus]
 Nexus01 ansible_host=192.168.6.3
 

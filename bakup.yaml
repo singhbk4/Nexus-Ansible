@@ -1,6 +1,6 @@
 ---
 - name: Backup Nexus device configuration
-  hosts: 192.168.6.3
+  hosts: nexus
   gather_facts: no
   tasks:
     - name: Backup Nexus device
