@@ -1,7 +1,6 @@
 ---
 - name: Backup Nexus device configuration
   hosts: nexus
-  gather_facts: no
   tasks:
     - name: Backup Nexus device
       nxos_config:
