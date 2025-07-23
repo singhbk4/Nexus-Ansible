@@ -7,7 +7,8 @@
         backup: true  
         backup_options:
           filename: "nexus_backup_{{ inventory_hostname }}.txt"
-          dir_path: ./Backups
+          dir_path: "{{ backup_dir }}"
+          #dir_path: ./Backups
       register: backup_result
 
     - name: Display backup result
