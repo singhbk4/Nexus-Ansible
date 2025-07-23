@@ -1,6 +1,6 @@
 ---
 - name: SSH to Cisco NX-OS device
-  hosts: nxos
+  hosts: nexus
   gather_facts: no
   connection: network_cli
 
