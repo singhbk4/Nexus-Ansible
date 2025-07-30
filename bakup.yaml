@@ -1,24 +1,34 @@
 ---
 - name: Backup Nexus device configuration
   hosts: nexus
+  gather_facts: no
   tasks:
     - name: Backup Nexus device
       nxos_config:
         backup: true  
         backup_options:
           filename: "nexus_backup_{{ inventory_hostname }}.txt"
-          dir_path: "{{ backup_dir }}"
-          #dir_path: ./Backups
+          dir_path: ./Backups
       register: backup_result
 
     - name: Display backup result
       debug:
         var: backup_result
-    
+
     - name: Copy backup to backup server
       copy:
-        src: "{{ backup_dir }}/nexus_backup_{{ inventory_hostname }}.txt"
-        dest: "C:\\Users\\kamle\\OneDrive\\Documents\\Ansible\\Nexus-Ansible\\Backups\\nexus_backup_{{ inventory_hostname }}.txt"
+        src: "./Backups/nexus_backup_{{ inventory_hostname }}.txt"
+        dest: "/home/kam/Documents/NexusBackup/nexus_backup_{{ inventory_hostname }}.txt"
       delegate_to: backup-server
       when: backup_result.changed
-      
+
+    # - name: Commit and push backup to GitHub
+    #   shell: |
+    #     cd /home/kam/Documents/NexusBackup
+    #     git add nexus_backup_{{ inventory_hostname }}.txt
+    #     git commit -m "Backup for {{ inventory_hostname }} on {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+    #     git push origin main
+    #   args:
+    #     executable: /bin/bash
+    #   delegate_to: backup-server
+    #   when: backup_result.changed
