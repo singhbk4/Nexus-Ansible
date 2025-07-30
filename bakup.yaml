@@ -15,6 +15,13 @@
       debug:
         var: backup_result
 
+    - name: Ensure NexusBackup directory exists on backup server
+      file:
+        path: /home/kam/Documents/NexusBackup
+        state: directory
+        mode: '0755'
+      delegate_to: backup-server
+
     - name: Copy backup to backup server
       copy:
         src: "./Backups/nexus_backup_{{ inventory_hostname }}.txt"
