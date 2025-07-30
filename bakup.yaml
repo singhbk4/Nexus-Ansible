@@ -29,6 +29,12 @@
       delegate_to: backup-server
       when: backup_result.changed
 
+    - name: Fetch backup file to AWX controller
+      fetch:
+        src: "./Backups/nexus_backup_{{ inventory_hostname }}.txt"
+        dest: "./fetched_backups/"
+        flat: yes
+
     # - name: Commit and push backup to GitHub
     #   shell: |
     #     cd /home/kam/Documents/NexusBackup
