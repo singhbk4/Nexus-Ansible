@@ -1,32 +1,40 @@
 ---
 - name: Backup CISCO Router configuration to Ansible AWX and then to a remote server
-  hosts: 192.168.6.3
+  hosts: "{{ switch_host }}"
   gather_facts: no
   connection: network_cli
+
+  vars:
+    switch_host: 192.168.6.3
+    backup_server: 192.168.6.148
+    backup_dir: /home/kam/Documents/NexusBackup
+    backup_filename: "sw_backup_{{ inventory_hostname }}.txt"
+    backup_local_path: "/tmp/{{ backup_filename }}"
+    backup_remote_path: "{{ backup_dir }}/{{ backup_filename }}"
 
   tasks:
     - name: Backup ios device
       ios_config:
         backup: true
         backup_options:
-          filename: "sw_backup_{{ inventory_hostname }}.txt"
+          filename: "{{ backup_filename }}"
           dir_path: /tmp
       register: backup_result
 
     - name: Ensure remote backup directory exists
       file:
-        path: /home/kam/Documents/NexusBackup
+        path: "{{ backup_dir }}"
         state: directory
         mode: '0755'
-      delegate_to: backup-server
+      delegate_to: "{{ backup_server }}"
 
     - name: Copy backup to remote server
       copy:
-        src: "/tmp/sw_backup_{{ inventory_hostname }}.txt"
-        dest: "/home/kam/Documents/NexusBackup/sw_backup_{{ inventory_hostname }}.txt"
-      delegate_to: backup-server
+        src: "{{ backup_local_path }}"
+        dest: "{{ backup_remote_path }}"
+      delegate_to: "{{ backup_server }}"
       when: backup_result.changed
 
     - name: Show backup file path
       debug:
-        msg: "Backup saved to /tmp/sw_backup_{{ inventory_hostname }}.txt and copied to backup-server:/home/kam/Documents/NexusBackup/sw_backup_{{ inventory_hostname }}.txt"
+        msg: "Backup saved to {{ backup_local_path }} and copied to {{ backup_server }}:{{ backup_remote_path }}"
