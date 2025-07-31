@@ -7,7 +7,7 @@
   vars:
     switch_host: 192.168.6.3
     backup_server: 192.168.6.148
-    backup_dir: /home/kam/Documents/NexusBackup
+    backup_dir: /home/kam/Documents
     backup_filename: "sw_backup_{{ inventory_hostname }}.txt"
     backup_local_path: "/tmp/{{ backup_filename }}"
     backup_remote_path: "{{ backup_dir }}/{{ backup_filename }}"
