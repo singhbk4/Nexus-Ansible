@@ -10,7 +10,7 @@
     backup_dir: /home/kam/Documents/backup
     backup_filename: "sw_backup_{{ inventory_hostname }}.txt"
     backup_local_path: "/tmp/{{ backup_filename }}"
-    backup_remote_path: "{{ backup_dir }}/{{ backup_filename }}"
+    backup_remote_path: "/home/kam/Documents/backup/{{ backup_filename }}"
 
   tasks:
     - name: Backup ios device
