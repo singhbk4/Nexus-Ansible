@@ -1,6 +1,6 @@
-[nexus]
-NEXUS01 ansible_host=192.168.6.3
+[switch]
+SW01 ansible_host=192.168.6.3
 
 [backup_server]
-#backup-server ansible_host=192.168.6.148 ansible_user=kam
-ansible_host=192.168.6.148 ansible_user=kam
+backup-server ansible_host=192.168.6.148 ansible_user=kam
+

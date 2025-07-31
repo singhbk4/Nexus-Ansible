@@ -1,47 +1,32 @@
 ---
-- name: Backup Nexus device configuration
-  hosts: nexus
+- name: Backup CISCO Router configuration to Ansible AWX and then to a remote server
+  hosts: switch
   gather_facts: no
+  connection: network_cli
+
   tasks:
-    - name: Backup Nexus device
-      nxos_config:
-        backup: true  
+    - name: Backup ios device
+      ios_config:
+        backup: true
         backup_options:
-          filename: "nexus_backup_{{ inventory_hostname }}.txt"
-          dir_path: ./Backups
+          filename: "sw_backup_{{ inventory_hostname }}.txt"
+          dir_path: /tmp
       register: backup_result
 
-    - name: Display backup result
-      debug:
-        var: backup_result
-
-    - name: Ensure NexusBackup directory exists on backup server
+    - name: Ensure remote backup directory exists
       file:
         path: /home/kam/Documents/NexusBackup
         state: directory
         mode: '0755'
       delegate_to: backup-server
 
-    - name: Copy backup to backup server
+    - name: Copy backup to remote server
       copy:
-        src: "./Backups/nexus_backup_{{ inventory_hostname }}.txt"
-        dest: "/home/kam/Documents/NexusBackup/nexus_backup_{{ inventory_hostname }}.txt"
+        src: "/tmp/sw_backup_{{ inventory_hostname }}.txt"
+        dest: "/home/kam/Documents/NexusBackup/sw_backup_{{ inventory_hostname }}.txt"
       delegate_to: backup-server
       when: backup_result.changed
 
-    - name: Fetch backup file to AWX controller
-      fetch:
-        src: "./Backups/nexus_backup_{{ inventory_hostname }}.txt"
-        dest: "./fetched_backups/"
-        flat: yes
-
-    # - name: Commit and push backup to GitHub
-    #   shell: |
-    #     cd /home/kam/Documents/NexusBackup
-    #     git add nexus_backup_{{ inventory_hostname }}.txt
-    #     git commit -m "Backup for {{ inventory_hostname }} on {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
-    #     git push origin main
-    #   args:
-    #     executable: /bin/bash
-    #   delegate_to: backup-server
-    #   when: backup_result.changed
+    - name: Show backup file path
+      debug:
+        msg: "Backup saved to /tmp/sw_backup_{{ inventory_hostname }}.txt and copied to backup-server:/home/kam/Documents/NexusBackup/sw_backup_{{ inventory_hostname }}.txt"
